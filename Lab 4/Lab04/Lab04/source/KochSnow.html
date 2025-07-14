@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bông Tuyết Koch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="kochCanvas"></canvas>
+    <div id="controls">
+        <label for="iteration-slider">Cấp độ:</label>
+        <input type="range" id="iteration-slider" min="0" max="7" value="1">
+        <span id="iteration-value">1</span>
+        <button id="reset-button">Reset</button>
+    </div>
+    <div id="message-box">Vẽ bông tuyết Koch. Sử dụng thanh trượt để thay đổi cấp độ.</div>
+
+    <script src="./js/main_KochSnow.js"></script>
+</body>
+</html>

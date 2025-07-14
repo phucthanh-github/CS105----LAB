@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="webgl-tutorials.css" />
+    <title>Minkowski</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+      <label for="iteration">Iteration (K): </label>
+      <input type="range" id="iteration" min="0" max="6" value="1" step="1" />
+      <span id="iterationValue">1</span>
+    </div>
+
+    <!-- vertex shader -->
+    <script id="vertex-shader-2d" type="x-shader/x-vertex">
+      attribute vec2 a_position;
+
+      uniform vec2 u_resolution;
+
+      void main() {
+        vec2 zeroToOne = a_position / u_resolution;
+
+        vec2 zeroToTwo = zeroToOne * 2.0;
+
+        vec2 clipSpace = zeroToTwo - 1.0;
+
+        gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+      }
+    </script>
+
+    <!-- fragment shader -->
+    <script id="fragment-shader-2d" type="x-shader/x-fragment">
+      precision mediump float;
+
+      uniform vec4 u_color;
+
+      void main() {
+        gl_FragColor = u_color;
+      }
+    </script>
+
+    <script src="./js/webgl-utils.js"></script>
+    <script src="./js/webgl-lessons-ui.js"></script>
+    <script src="./js/main_Minkowski.js"></script>
+  </body>
+</html>

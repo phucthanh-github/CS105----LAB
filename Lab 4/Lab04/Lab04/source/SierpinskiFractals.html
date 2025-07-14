@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sierpinski Fractals</title>
+    <style>
+        canvas { border: 1px solid black; }
+    </style>
+</head>
+<body>
+    <h2>Sierpinski Fractals</h2>
+    <label>Độ sâu đệ quy: <input type="number" id="depth" min="0" max="6" value="3"></label>
+    <button onclick="drawTriangle()">Vẽ tam giác</button>
+    <button onclick="drawCarpet()">Vẽ hình vuông</button>
+    <br><br>
+    <canvas id="glcanvas" width="500" height="500"></canvas>
+
+    <script src="./js/main_Sierpinski.js"></script>
+</body>
+</html>

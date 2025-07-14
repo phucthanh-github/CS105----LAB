@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vẽ Đồ Thị và Đường Cong</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            font-family: Arial, sans-serif; 
+            background-color: #f5f5f5;
+        }
+        canvas { 
+            display: block; 
+            width: 100%; 
+            height: 100%; 
+            background-color: white;
+        }
+        #control-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 320px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .tab-buttons { 
+            display: flex; 
+            margin-bottom: 10px;
+            gap: 5px;
+        }
+        .tab-button {
+            flex: 1; 
+            padding: 10px; 
+            cursor: pointer; 
+            text-align: center;
+            background: #e0e0e0; 
+            border: none; 
+            outline: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .tab-button:hover {
+            background: #d0d0d0;
+        }
+        .tab-button.active { 
+            background: #4CAF50; 
+            color: white;
+        }
+        .tab-content { 
+            display: none; 
+            padding: 10px 0;
+        }
+        .tab-content.active { 
+            display: block; 
+        }
+        textarea, input[type="number"] { 
+            width: 100%; 
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        button {
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .example {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #4CAF50;
+        }
+        h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .control-group {
+            margin-bottom: 15px;
+        }
+        .info-message {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="control-panel">
+        <div class="tab-buttons">
+            <button id="graphTab" class="tab-button active">Đồ Thị Hàm Số</button>
+            <button id="bezierTab" class="tab-button">Bezier</button>
+            <button id="hermitTab" class="tab-button">Hermit</button>
+            <button id="flowerTab" class="tab-button">Hoa n cánh</button>
+        </div>
+        
+        <!-- Tab đồ thị hàm số -->
+        <div id="graphContent" class="tab-content active">
+            <h3>Đồ Thị Hàm Số y = sin(x)</h3>
+            <div class="info-message">
+                Khoảng giá trị: x ∈ [-5, 5]
+            </div>
+            <div class="info-message">
+                Hệ trục tọa độ: [-10, 10]
+            </div>
+            <button id="drawFunction">Vẽ Lại Đồ Thị</button>
+        </div>
+        
+        <!-- Tab đường cong Bezier -->
+        <div id="bezierContent" class="tab-content">
+            <h3>Đường Cong Bezier</h3>
+            <div class="control-group">
+                <label>Điểm điều khiển (x,y):</label>
+                <textarea id="controlPoints" placeholder="Nhập mỗi điểm trên một dòng, ví dụ:
+0,0
+1,2
+2,-1
+3,0"></textarea>
+            </div>
+            <button id="drawBezier">Vẽ Đường Cong</button>
+            <div class="example">
+                <strong>Ví dụ:</strong><br>
+                0,0<br>
+                1,3<br>
+                2,-2<br>
+                3,0<br>
+                (Tạo đường cong với 4 điểm điều khiển)
+            </div>
+        </div>
+        
+        <!-- Tab đường cong Hermit -->
+        <div id="hermitContent" class="tab-content">
+            <h3>Đường Cong Hermit</h3>
+            <div class="control-group">
+                <label>Thông số đường cong:</label>
+                <textarea id="hermitParams" placeholder="Nhập theo thứ tự:
+Điểm đầu (x,y)
+Vector tại điểm đầu (dx,dy)
+Điểm cuối (x,y)
+Vector tại điểm cuối (dx,dy)"></textarea>
+            </div>
+            <button id="drawHermit">Vẽ Đường Cong</button>
+            <div class="example">
+                <strong>Ví dụ:</strong><br>
+                0,0<br>
+                1,0<br>
+                3,2<br>
+                0,1<br>
+                (Tạo đường cong từ (0,0) đến (3,2))
+            </div>
+        </div>
+        
+        <!-- Tab hoa n cánh -->
+        <div id="flowerContent" class="tab-content">
+            <h3>Hoa n cánh</h3>
+            <div class="control-group">
+                <label>Số cánh hoa (n):</label>
+                <input type="number" id="petalCount" value="5" min="1" max="20">
+            </div>
+            <button id="drawFlower">Vẽ Hoa</button>
+            <div class="example">
+                <strong>Phương trình mỗi cánh:</strong><br>
+                x(t) = cos(5t)·cos(t)<br>
+                y(t) = cos(5t)·sin(t)<br>
+                t ∈ [0, 2π]
+            </div>
+        </div>
+    </div>
+    
+    <canvas id="graphCanvas"></canvas>
+    
+    <!-- Load các file JavaScript -->
+    <script src="shared-gl.js"></script>
+    <script src="graph.js"></script>
+    <script src="bezier.js"></script>
+    <script src="hermit.js"></script>
+    <script src="flower.js"></script>
+    
+    <script>
+        // Khởi tạo ứng dụng khi trang tải xong
+        document.addEventListener('DOMContentLoaded', () => {
+            // Khởi tạo WebGL
+            const sharedGL = new SharedGL('graphCanvas');
+            
+            // Khởi tạo các chế độ
+            const graphMode = new GraphMode(sharedGL);
+            const bezierMode = new BezierMode(sharedGL, document.getElementById('controlPoints'));
+            const hermitMode = new HermitMode(sharedGL, document.getElementById('hermitParams'));
+            const flowerMode = new FlowerMode(sharedGL, document.getElementById('petalCount'));
+            
+            // Tham chiếu các phần tử UI
+            const tabs = {
+                graph: document.getElementById('graphTab'),
+                bezier: document.getElementById('bezierTab'),
+                hermit: document.getElementById('hermitTab'),
+                flower: document.getElementById('flowerTab')
+            };
+            
+            const contents = {
+                graph: document.getElementById('graphContent'),
+                bezier: document.getElementById('bezierContent'),
+                hermit: document.getElementById('hermitContent'),
+                flower: document.getElementById('flowerContent')
+            };
+            
+            const buttons = {
+                graph: document.getElementById('drawFunction'),
+                bezier: document.getElementById('drawBezier'),
+                hermit: document.getElementById('drawHermit'),
+                flower: document.getElementById('drawFlower')
+            };
+            
+            const inputs = {
+                controlPoints: document.getElementById('controlPoints'),
+                hermitParams: document.getElementById('hermitParams'),
+                petalCount: document.getElementById('petalCount')
+            };
+            
+            let currentMode = 'graph';
+            
+            // Vẽ chế độ hiện tại
+            function drawCurrentMode() {
+                try {
+                    switch(currentMode) {
+                        case 'graph':
+                            graphMode.draw();
+                            break;
+                        case 'bezier':
+                            bezierMode.draw();
+                            break;
+                        case 'hermit':
+                            hermitMode.draw();
+                            break;
+                        case 'flower':
+                            flowerMode.draw();
+                            break;
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi vẽ:", error);
+                    alert("Lỗi khi vẽ: " + error.message);
+                }
+            }
+            
+            // Chuyển đổi giữa các tab
+            function switchTab(mode) {
+                currentMode = mode;
+                
+                // Cập nhật trạng thái active cho các tab
+                Object.keys(tabs).forEach(key => {
+                    if (key === mode) {
+                        tabs[key].classList.add('active');
+                        contents[key].classList.add('active');
+                    } else {
+                        tabs[key].classList.remove('active');
+                        contents[key].classList.remove('active');
+                    }
+                });
+                
+                drawCurrentMode();
+            }
+            
+            // Gán sự kiện cho các tab
+            Object.keys(tabs).forEach(key => {
+                tabs[key].addEventListener('click', () => switchTab(key));
+            });
+            
+            // Gán sự kiện cho các nút vẽ
+            Object.keys(buttons).forEach(key => {
+                buttons[key].addEventListener('click', () => {
+                    if (currentMode === key) {
+                        drawCurrentMode();
+                    }
+                });
+            });
+            
+            // Ngăn sự kiện Enter lan ra ngoài các textarea
+            Object.values(inputs).forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.stopPropagation();
+                    }
+                });
+            });
+            
+            // Vẽ ban đầu
+            switchTab('graph');
+        });
+    </script>
+</body>
+</html>

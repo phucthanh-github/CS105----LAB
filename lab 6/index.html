@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Three.js Transformations</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+        #webgl { 
+            width: 100%; 
+            height: 100vh;
+        }
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-family: Arial, sans-serif;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <p>- Hình trụ: Quay + Thay đổi tỉ lệ</p>
+        <p>- Hình nón: Quay + Tịnh tiến dọc trục Y</p>
+        <p>- Camera: Vị trí (5,5,10) | Nhìn vào điểm (1,2,-3)</p>
+    </div>
+    <div id="webgl"></div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

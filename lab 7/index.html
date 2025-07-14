@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js - Chiếu sáng và Texture</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden;
+            background: #1a1a2e;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            display: block;
+        }
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 400px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #00b4d8;
+        }
+        .highlight {
+            color: #90e0ef;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>Kỹ thuật Chiếu sáng và Texture</h1>
+        <p><span class="highlight">Texture:</span> Áp dụng vật liệu gỗ cho hình trụ và kim loại cho hình nón.</p>
+        <p><span class="highlight">Chiếu sáng:</span> Sử dụng AmbientLight, DirectionalLight và PointLight.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

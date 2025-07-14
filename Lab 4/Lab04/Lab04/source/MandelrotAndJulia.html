@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandelbrot And Julia Sets</title>
+    <style>
+        canvas{border: 1px solid black;}
+    </style>
+</head>
+<body>
+    <h1>Mandelbrot and Julia sets</h1>
+    <label>c = 
+        <input type="text" id="cValue" value="-0.4+0.6i">
+    </label>
+    <button id="drawMandelbrotBtn">Mandelbrot</button>
+    <button id="drawJuliaBtn">Julia</button><br><br>
+    <p>Some common c</p>
+    <p>-0.4+0.6i</p>
+    <p>-0.162+1.04i</p>
+    <p>0.3-0.01i</p>
+    <p>-1.476+0i</p>
+    <p>-0.12-0.77i</p>
+    <p>0.28+0.008i</p>
+    <canvas id="canvas" width="700" height="700"></canvas>
+    <script src="./js/webgl-utils.js"></script>
+    <script src="./js/webgl-lessons-ui.js"></script>
+    <script src="./js/main_Mandelrot.js"></script>
+</body>
+</html>
